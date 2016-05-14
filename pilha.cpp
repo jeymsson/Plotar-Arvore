@@ -78,6 +78,39 @@ void Pilha::Push_back_Org(int idade, string & nome)
     push_back(idade, nome);
 }
 
+void Pilha::Push_back_No(Nol * no)
+{
+	
+	Nol *novo = new Nol();
+	//Copia idade
+	novo->Idade = no->getIdade();
+	//getchar();
+	//Copia strings
+	string s1;
+	string s2;
+	string s3;
+
+	no->ordena();
+	if(!no->nome3.empty()){
+		s1 = no->nome1;
+		s2 = no->nome2;
+		s3 = no->nome3;
+	} else if (!no->nome2.empty()) {
+		s1 = no->nome1;
+		s2 = no->nome2;
+	} else if (!no->nome1.empty()) {
+		s1 = no->nome1;
+	} 
+	novo->nome1 = s1;
+	novo->nome2 = s2;
+	novo->nome3 = s3;
+
+	novo->Back = getTrailer()->Back;
+	novo->Next = getTrailer();
+	novo->Back->Next = novo;
+	getTrailer()->Back = novo;
+}
+
 void Pilha::pop_back()
 {
     if (empty()) {

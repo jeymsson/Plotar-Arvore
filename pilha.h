@@ -23,6 +23,7 @@ public:
 
 
     void Push_back_Org(int idade, string & nome);
+    void Push_back_No(Nol * no);
     void pop_back();
     void remove(Nol * noh);
     void clear();
