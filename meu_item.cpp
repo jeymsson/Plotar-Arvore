@@ -81,16 +81,41 @@ void Meu_Item::setPilha(Pilha *pilha, QString QIdadeBusca)
     }
 }
 
+void Meu_Item::setArvore(Arvore *arvore, QString QIdadeBusca)
+{
+    //Seta a Arvore.
+    this->arvore = arvore;
+
+    //Seta o valor de busca para tornar o noh com cor diferente
+    if(QIdadeBusca.isEmpty()){
+        this->busca = NULL;
+    } else {
+        this->busca = converter_QstringToInt(QIdadeBusca);
+    }
+}
+
 void Meu_Item::setPilha(Pilha *pilha)
 {
     //Seta a Pilha.
     this->pilha = pilha;
 }
 
+void Meu_Item::setArvore(Arvore *arvore)
+{
+    //Seta a Arvore.
+    this->arvore = arvore;
+}
+
 Pilha *Meu_Item::getPilha()
 {
     return this->pilha;
 }
+
+Arvore *Meu_Item::getArvore()
+{
+    return this->arvore;
+}
+
 
 void Meu_Item::No_Print(QPainter *Desenho, Pilha *pilha)
 {

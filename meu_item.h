@@ -8,7 +8,7 @@
 
 #include "pilha.h"
 #include "funcoes.h" //Para exibir os dados do no nas figuras
-
+#include "arvore.h"
 
 class Meu_Item :public QGraphicsItem  // class for customization
 {
@@ -30,9 +30,13 @@ public:
     void setPilha(Pilha * pilha, QString QIdadeBusca);
     void setPilha(Pilha * pilha);
     Pilha * getPilha();
+        Arvore * getArvore();
+        void setArvore(Arvore * arvore);
+        void setArvore(Arvore * arvore, QString QIdadeBusca);
 
 private:
     Pilha * pilha;
+        Arvore* arvore;
 
     int x1 = 0;
     int y1 = 0;
