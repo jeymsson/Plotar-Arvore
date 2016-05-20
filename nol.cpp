@@ -212,3 +212,32 @@ void Nol::setNome(int NumeroNome, string texto)
     }
 }
 
+int Nol::getQtd()
+{
+    if(getLeft()->isSentinel() && getRight()->isSentinel()){
+        return 1;
+    } else {
+        int Qtd = 0;
+        getQtd(this, Qtd);
+    }
+}
+
+int Nol::getQtd(Nol* No, int Qtd)
+{
+    Qtd++;
+    if(getLeft()->isSentinel() && getRight()->isSentinel()){
+        return Qtd;
+    } else {
+        if(!No->getLeft()->isSentinel()){
+            getQtd(No->getLeft(), Qtd);
+        }
+        if(!No->getRight()->isSentinel()){
+            getQtd(No->getRight(), Qtd);
+        }
+
+    }
+    return Qtd;
+}
+
+
+

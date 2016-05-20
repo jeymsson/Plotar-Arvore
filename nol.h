@@ -22,6 +22,8 @@ private:
 	int num_strings;
 	bool Sentinel;
 
+    int getQtd(Nol* No, int Qtd);
+
 public:
 	Nol();
 	~Nol();
@@ -53,6 +55,9 @@ public:
 	string getNomes();
 	string getNome(int NumeroNome);
 	void   setNome(int NumeroNome, string texto);
+
+    int getQtd();
+
 
 	friend class Pilha;
 	friend class Arvore;
