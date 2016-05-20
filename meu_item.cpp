@@ -5,6 +5,7 @@ Meu_Item::Meu_Item()
 {
     this->busca = NULL;
     this->pilha = new Pilha();
+    this->arvore = new Arvore();
 
     this->Pressionado = false;
     this->Ligado = true;
@@ -42,12 +43,16 @@ void Meu_Item::paint(QPainter *Desenho
                      , const QStyleOptionGraphicsItem *Opcao
                      , QWidget *widget)
 {
-    No_Print(Desenho, this->pilha);
+    No_Pilha_Print(Desenho, this->pilha);
+    //Desenha_No(Desenho, getPilha()->getHeader()->getNext(), this->x1, this->x2, 0, 60);
+    //No_Arv_Print(Desenho, this->arvore);
     update();
 }
 
 void Meu_Item::desenha_flecha_Esq(QPainter *Desenho, const int coord_X, const int coord_Y, int pont, int cabo)
 {
+    int altura_level = 50;
+
     int tam = pont;
     //Organiza poligono
     QPolygon seta;
@@ -61,7 +66,7 @@ void Meu_Item::desenha_flecha_Esq(QPainter *Desenho, const int coord_X, const in
     //agulha..
     QPainterPath agulha;
     agulha.addPolygon(seta);
-    //Cabo da flecha
+    //Cabo da flecha //(largura, altura_esq,  , altura_dir)
     Desenho->drawLine( cabo, (coord_Y + tam/2), (coord_X - tam), (coord_Y + tam/2) );
     //Desenha e costuro estampa..
     Desenho->drawPolygon(seta);
@@ -117,14 +122,13 @@ Arvore *Meu_Item::getArvore()
 }
 
 
-void Meu_Item::No_Print(QPainter *Desenho, Pilha *pilha)
+void Meu_Item::No_Pilha_Print(QPainter *Desenho, Pilha *pilha)
 {
     QRectF rect = limitadorPagina();
     int X_Final2 = this->x2 ;
     int Novo_x1 = this->x1;
     int     largura_no = (this->x2 - this->x1);
-    int distancia = 30;
-    int quantidade_Nos;
+    int distancia = 40;
 
     Desenho-> eraseRect(rect); //aqui só apaga nessas margens..
     if(Ligado)
@@ -133,40 +137,20 @@ void Meu_Item::No_Print(QPainter *Desenho, Pilha *pilha)
 
             Nol * ponteiro = pilha->getHeader()->getNext();
             int temp_x;
-            QString Idade;
-            QString Nomes;
             int ajuste_flecha = 2;
 
             while(ponteiro != trailer ){
-                Idade = converter_Int_ToQstring(ponteiro->getIdade());
-                Nomes = converter_StringToQstring(ponteiro->getNomes());
 
-                //Estilo caneta
-                if(ponteiro->getIdade() == this->busca){
-                    QPen pen(Qt::red, 3);
-                    Desenho->setPen(pen);
-                } else{
-                    QPen pen(Qt::black, 3);
-                    Desenho->setPen(pen);
-                }
-                //Desenha quadrado
-                Desenho->drawRect(Novo_x1,0,X_Final2,60);
-
-                //Escreve
-                Desenho->setFont(QFont("Arial", 18));
-                Desenho->drawText(Novo_x1,0,X_Final2,60, Qt::AlignHCenter, Idade);
-                Desenho->setFont(QFont("Arial", 13));
-                Desenho->drawText(Novo_x1,0,X_Final2,60, Qt::AlignCenter, "\n" + Nomes);
+                Desenha_No(Desenho, ponteiro, Novo_x1, X_Final2, 0, 60 );
 
                 //Define as cordenadas do proximo no e da Seta.
                 ponteiro = ponteiro->getNext();
                 Novo_x1 = Novo_x1 + largura_no + distancia;
-                quantidade_Nos++;
                 temp_x = Novo_x1 - distancia;
 
                 if(ponteiro != trailer) {
                     //Ajuste é para a seta não invadir uma caixa
-                    desenha_flecha_Esq(Desenho, Novo_x1, (this->y2)/2, 8, Novo_x1 - distancia +ajuste_flecha);
+                    desenha_flecha_Esq(Desenho, Novo_x1, (this->y2)/2, 8, Novo_x1 - distancia /*+ajuste_flecha*/);
                 }
             }
             update();
@@ -176,5 +160,32 @@ void Meu_Item::No_Print(QPainter *Desenho, Pilha *pilha)
 
         }//Fim verificação se está vazio
     }//Fim do if(Ligado);
+}
+
+
+void Meu_Item::Desenha_No(QPainter *Desenho, Nol *noh, int X1, int X2, int Y1, int Y2)
+{
+    int Novo_x1 = X1;
+    int X_Final2 = X2;
+    QString Idade;
+    QString Nomes;
+
+    Idade = converter_Int_ToQstring(noh->getIdade());
+    Nomes = converter_StringToQstring(noh->getNomes());
+    //Estilo caneta
+    if(noh->getIdade() == this->busca){
+        QPen pen(Qt::red, 3);
+        Desenho->setPen(pen);
+    } else{
+        QPen pen(Qt::black, 3);
+        Desenho->setPen(pen);
+    }
+    //Desenha quadrado
+    Desenho->drawRect(Novo_x1,Y1,X_Final2,Y2);
+    //Escreve
+    Desenho->setFont(QFont("Arial", 18));
+    Desenho->drawText(Novo_x1,Y1,X_Final2,Y2, Qt::AlignHCenter, Idade);
+    Desenho->setFont(QFont("Arial", 13));
+    Desenho->drawText(Novo_x1,Y1,X_Final2,Y2, Qt::AlignCenter, "\n" + Nomes);
 }
 

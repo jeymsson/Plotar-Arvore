@@ -45,14 +45,14 @@ private:
     int X_Final;
 
 
-
     void atualizaTudo();
 
 protected:
     // overriding mouse events
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-void No_Print(QPainter *Desenho, Pilha *pilha);
+void Desenha_No(QPainter *Desenho, Nol* noh, int X1, int X2, int Y1, int Y2);
+void No_Pilha_Print(QPainter *Desenho, Pilha *pilha);
 void desenha_flecha_Esq(QPainter *Desenho, const int coord_X, const int coord_Y, int seta, int cabo);
 
 };
