@@ -10,6 +10,7 @@ class Pilha{
 private:
     Nol * Header;
     Nol * Trailer;
+    int Num_nos;
 
     void insert_before(Nol * noh, int idade, string & texto);
 
@@ -29,6 +30,7 @@ public:
     void clear();
     Nol* Buscar(int idade);
     string Print();
+    int getNum_nos();
 
 };
 

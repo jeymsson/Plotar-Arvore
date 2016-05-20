@@ -10,6 +10,8 @@ Pilha::Pilha(){
     Trailer->Back = Header;
     Trailer->Next = NULL;
     Header->Next = Trailer;
+
+    this->Num_nos = 0;
 }
 
 Pilha::~Pilha(){
@@ -31,6 +33,8 @@ void Pilha::insert_before(Nol * noh, int idade, string & texto)
         n->Back = noh->Back;
         noh->Back->Next = n;
         noh->Back = n;
+
+        this->Num_nos++;
     }
 }
 
@@ -43,6 +47,7 @@ void Pilha::remove(Nol * noh)
         noh->Next->Back = noh->Back;
 
         delete noh;
+        this->Num_nos--;
     }
 }
 
@@ -76,6 +81,7 @@ void Pilha::Push_back_Org(int idade, string & nome)
         temp = temp->Next;
     }
     push_back(idade, nome);
+    this->Num_nos++;
 }
 
 void Pilha::Push_back_No(Nol * no)
@@ -109,6 +115,8 @@ void Pilha::Push_back_No(Nol * no)
 	novo->Next = getTrailer();
 	novo->Back->Next = novo;
 	getTrailer()->Back = novo;
+
+    this->Num_nos++;
 }
 
 void Pilha::pop_back()
@@ -177,4 +185,10 @@ string Pilha::Print()
     }
     return print;
 }
+
+int Pilha::getNum_nos()
+{
+    return this->Num_nos;
+}
+
 
