@@ -1,10 +1,5 @@
-#include "dialog.h"
+﻿#include "dialog.h"
 #include "ui_dialog.h"
-
-
-
-
-
 
 Dialog::Dialog(QWidget *parent) :
     QDialog(parent),
@@ -29,6 +24,10 @@ Dialog::Dialog(QWidget *parent) :
     //Validador do campo idade.
     this->validaIdade =  new QIntValidator(0, 999, this);
     ui->editaIdade->setValidator(this->validaIdade);
+
+        //Teste adicionando
+    //this->pilha->Push_back_Org(10, std::string("Tex") );
+    //this->Item->setPilha(this->pilha, converter_Int_ToQstring(10));
 
 }
 
@@ -121,9 +120,6 @@ void Dialog::on_botaoRemover_clicked(){
 
 adicionaEm_combo(this->ultimo_BUSCADO);
 }
-
-
-
 
 void Dialog::on_botaoBuscar_clicked()
 {

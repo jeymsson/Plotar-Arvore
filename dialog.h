@@ -11,6 +11,7 @@
 
 #include "meu_item.h"
 #include "pilha.h"
+#include "arvore.h"
 #include "funcoes.h"
 #include "manipulacoes.h"
 
@@ -43,6 +44,7 @@ private slots:
 
 private:
     Pilha * pilha;
+    Arvore * arvore;
 
     Ui::Dialog *ui;
     QGraphicsScene *Cenario;
