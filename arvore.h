@@ -19,7 +19,6 @@ private:
 
 	//Altura e largura
 	int  retornarAltura(Nol * r);
-	int  getMaxLargura(Nol* root);
 	int  getWidth(Nol* root, int level);
 	
 public:
@@ -36,6 +35,8 @@ public:
 	Nol* Busca_no(int chave);
 		//Adição
 	void Add_org(int idade, string & nome);
+	void Add_No(Nol* No);
+	
 		//Vareduras
 	void VLR();
 	void LVR();
@@ -44,7 +45,7 @@ public:
 
 	int  getAltura();
 	int  getLargura();
-
+	int  getMaxLargura(Nol* root);
 
 	
 	
