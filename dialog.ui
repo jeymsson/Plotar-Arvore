@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>910</width>
-    <height>481</height>
+    <height>636</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
      <x>0</x>
      <y>260</y>
      <width>911</width>
-     <height>201</height>
+     <height>361</height>
     </rect>
    </property>
   </widget>
@@ -27,7 +27,7 @@
    <property name="geometry">
     <rect>
      <x>420</x>
-     <y>460</y>
+     <y>620</y>
      <width>47</width>
      <height>13</height>
     </rect>
@@ -113,7 +113,7 @@
          <bool>true</bool>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="tab_1">
          <attribute name="title">
