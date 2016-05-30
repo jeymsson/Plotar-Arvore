@@ -92,7 +92,6 @@ void Dialog::on_botaoInserir_clicked()
     qDebug() << converter_StringToQstring(this->arvore->getVarredura()->Print());
 }
 
-//Linha 106
 void Dialog::on_botaoRemover_clicked(){
 
     if(ui->comboRemocao->count()  == 0){ //Se a quantidade de elementos da lista =0
@@ -142,8 +141,9 @@ void Dialog::on_botaoBuscar_clicked()
     QString QBusca = ui->editaIdade->text();
     int     iBusca = converter_QstringToInt(QBusca);
 
-    if(QBusca.isEmpty()){
+    if(QBusca.isEmpty() ||  this->arvore->Busca_no(iBusca)->isSentinel()){
         qDebug() << "O valor buscado eh: NULO";
+        QMessageBox::information(this, tr("Botao Buscar."), tr("Idade nao achada."));
     } else {
         qDebug() << "O valor buscado eh: " << converter_Int_ToQstring(iBusca);
     }
@@ -259,6 +259,9 @@ void Dialog::on_botaoGerar_clicked()
                 }
             }
         }
+        ui->label_altura->setText(converter_Int_ToQstring(this->arvore->getAltura()));
+        ui->label_qtd_nos->setText(converter_Int_ToQstring(this->arvore->getQtd_Nos()));
+        ui->label_qtd_folhas->setText(converter_Int_ToQstring(this->arvore->getNum_Folhas()));
     }
 
 }
@@ -304,4 +307,47 @@ void Dialog::on_botaoApagarArvore_clicked()
         ui->label_qtd_nos->setText(converter_Int_ToQstring(this->arvore->getQtd_Nos()));
         ui->label_qtd_folhas->setText(converter_Int_ToQstring(this->arvore->getNum_Folhas()));
     }
+}
+
+void Dialog::on_botaoMostrarTrav_clicked()
+{
+    if(!this->arvore->getRaiz()->isSentinel()){
+        string varredura;
+        if(ui->comboTrav->currentIndex() == 0){ //Se for a Pre
+            this->arvore->VLR();
+            varredura = this->arvore->getVarredura()->Print();
+
+        } else if(ui->comboTrav->currentIndex() == 1){ //Se for a In
+            this->arvore->LVR();
+            varredura = this->arvore->getVarredura()->Print();
+
+        } else if(ui->comboTrav->currentIndex() == 2){ //Se for a pos
+            this->arvore->LRV();
+            varredura = this->arvore->getVarredura()->Print();
+
+        }
+
+        if(ui->comboTrav->currentIndex() == 3   ){ //Se for a original
+            this->Item->setArvore(this->arvore);
+            ui->label_altura->setText(converter_Int_ToQstring(this->arvore->getAltura()));
+            ui->label_qtd_nos->setText(converter_Int_ToQstring(this->arvore->getQtd_Nos()));
+            ui->label_qtd_folhas->setText(converter_Int_ToQstring(this->arvore->getNum_Folhas()));
+
+            this->arvore->VLR();
+            varredura = this->arvore->getVarredura()->Print();
+
+        } else {
+            if(this->arvore->getRaiz()->isSentinel()){
+                varredura = "vazio.";
+            }
+            Arvore* Arv = Gerar_Arvore(varredura);
+            this->Item->setArvore(Arv);
+
+            ui->label_altura->setText(converter_Int_ToQstring(Arv->getAltura()));
+            ui->label_qtd_nos->setText(converter_Int_ToQstring(Arv->getQtd_Nos()));
+            ui->label_qtd_folhas->setText(converter_Int_ToQstring(Arv->getNum_Folhas()));
+        }
+        ui->editaTrav->setText(converter_StringToQstring(varredura));
+    }
+
 }

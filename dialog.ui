@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>970</width>
-    <height>636</height>
+    <height>800</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
      <x>0</x>
      <y>260</y>
      <width>971</width>
-     <height>361</height>
+     <height>521</height>
     </rect>
    </property>
   </widget>
@@ -27,7 +27,7 @@
    <property name="geometry">
     <rect>
      <x>850</x>
-     <y>620</y>
+     <y>780</y>
      <width>47</width>
      <height>13</height>
     </rect>
@@ -54,8 +54,8 @@
     <rect>
      <x>20</x>
      <y>20</y>
-     <width>221</width>
-     <height>211</height>
+     <width>251</width>
+     <height>181</height>
     </rect>
    </property>
    <property name="title">
@@ -203,7 +203,7 @@
     <rect>
      <x>660</x>
      <y>20</y>
-     <width>281</width>
+     <width>261</width>
      <height>181</height>
     </rect>
    </property>
@@ -452,6 +452,91 @@
     <string>Apagar Arvore</string>
    </property>
   </widget>
+  <widget class="QGroupBox" name="groupBox_3">
+   <property name="geometry">
+    <rect>
+     <x>340</x>
+     <y>30</y>
+     <width>251</width>
+     <height>171</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Travessias</string>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout_7">
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout_6">
+      <property name="spacing">
+       <number>1</number>
+      </property>
+      <item>
+       <widget class="QLineEdit" name="editaTrav">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial Rounded MT Bold</family>
+          <pointsize>10</pointsize>
+          <italic>false</italic>
+          <underline>false</underline>
+          <strikeout>false</strikeout>
+          <kerning>true</kerning>
+         </font>
+        </property>
+        <property name="text">
+         <string notr="true"/>
+        </property>
+        <property name="maxLength">
+         <number>32767</number>
+        </property>
+        <property name="echoMode">
+         <enum>QLineEdit::Normal</enum>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+        <property name="placeholderText">
+         <string notr="true">Travessias</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="comboTrav">
+        <item>
+         <property name="text">
+          <string notr="true">Pre-Ordem</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Im-Ordem</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Pos-Ordem</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Original</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="botaoMostrarTrav">
+        <property name="text">
+         <string>Mostrar</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
   <zorder>layoutWidget</zorder>
   <zorder>graphicsView</zorder>
   <zorder>label_liga_desliga</zorder>
@@ -461,6 +546,7 @@
   <zorder>layoutWidget_2</zorder>
   <zorder>layoutWidget_3</zorder>
   <zorder>botaoApagarArvore</zorder>
+  <zorder>groupBox_3</zorder>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

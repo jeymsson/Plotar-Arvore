@@ -44,6 +44,8 @@ private slots:
 
     void on_botaoApagarArvore_clicked();
 
+    void on_botaoMostrarTrav_clicked();
+
 private:
     Pilha * pilha;
     Arvore * arvore;
