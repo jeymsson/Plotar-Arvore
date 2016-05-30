@@ -7,6 +7,7 @@ Dialog::Dialog(QWidget *parent) :
 {
     ui->setupUi(this);
     this->pilha = new Pilha(); //Cria pilha.
+    this->arvore= new Arvore();//Cria Arvore.
 
     //Desativa tab de remocao
     ui->abas_Tab_Widget->setTabEnabled(1, false);;
@@ -29,6 +30,10 @@ Dialog::Dialog(QWidget *parent) :
     //this->pilha->Push_back_Org(10, std::string("Tex") );
     //this->Item->setPilha(this->pilha, converter_Int_ToQstring(10));
 
+    ui->label_altura->setText(converter_Int_ToQstring(this->arvore->getAltura()));
+    ui->label_qtd_nos->setText(converter_Int_ToQstring(this->arvore->getQtd_Nos()));
+    ui->label_qtd_folhas->setText(converter_Int_ToQstring(this->arvore->getNum_Folhas()));
+
 }
 
 Dialog::~Dialog()
@@ -40,7 +45,7 @@ void Dialog::on_botaoOk_clicked()
 {//Liga desliga
     this->Item->Ligado = (Item->Ligado ? false : true);
 
-    ui->label->setText((this->Item->Ligado ? "Ligado" : "Desligado") );
+    ui->label_liga_desliga->setText((this->Item->Ligado ? "Ligado" : "Desligado") );
 
     int i;
     QString s = ui->editaIdade->text();
@@ -61,28 +66,38 @@ void Dialog::on_botaoInserir_clicked()
     } else if(QNome.isEmpty()){
         QMessageBox::information(this, tr("Atenção."), tr("Nao tem nome digitado."));
     } else {
-        this->pilha->Push_back_Org(iIdade, std::string(sNome) );
+        this->arvore->Add_org(iIdade, std::string(sNome) );
 
-        //    Pilha * p = new Pilha();
-        //    p->Push_back_Org(10, string("Zen"));
-        //    p->Push_back_Org(20, string("Zen"));
-        //    p->Push_back_Org(30, string("Zen"));
-        //    this->Item->setPilha(p);
+            /*Arvore * arv = new Arvore();
+            std::string strin = "Zen";
+            arv->Add_org(10, string(strin));
+            arv->Add_org(20, string(strin));
+            arv->Add_org(30, string(strin));
+            this->Item->setArvore(arv);*/
 
-        this->Item->setPilha(this->pilha, QIdade);
+        this->Item->setArvore(this->arvore, QIdade);
 
         //Se o adicionado for o mesmo que está em cache para remoção atuaiza a lista.
         if(iIdade == this->ultimo_BUSCADO){
             adicionaEm_combo(iIdade);
         }
-    }qDebug() << converter_StringToQstring(this->pilha->Print());
+
+        //Atualiza a altura e a qtd de nos.
+        ui->label_altura->setText(converter_Int_ToQstring(this->arvore->getAltura()));
+        ui->label_qtd_nos->setText(converter_Int_ToQstring(this->arvore->getQtd_Nos()));
+        ui->label_qtd_folhas->setText(converter_Int_ToQstring(this->arvore->getNum_Folhas()));
+
+    }
+    this->arvore->VLR();
+    qDebug() << converter_StringToQstring(this->arvore->getVarredura()->Print());
 }
 
+//Linha 106
 void Dialog::on_botaoRemover_clicked(){
 
     if(ui->comboRemocao->count()  == 0){ //Se a quantidade de elementos da lista =0
         QMessageBox::information(this, tr("Botao Remover."), tr("Não existe elementos a serem removidos."));
-    } else if(ui->comboRemocao->count()  == 1){ //Se a quantidade de elementos da lista =0
+    } else if(ui->comboRemocao->count()  == 1){ //Se Tiver somente um nome
 
         QMessageBox::StandardButton resposta;
         resposta = QMessageBox::question(this, tr("Botao Remover.")
@@ -92,13 +107,13 @@ void Dialog::on_botaoRemover_clicked(){
         } else if(resposta == QMessageBox::Yes){
 
             //Removendo do ultimo elemento BUSCADO
-            Nol * remover = this->pilha->Buscar(this->ultimo_BUSCADO);
+            Nol * remover = this->arvore->Busca_no(this->ultimo_BUSCADO);
 
             if(remover == NULL){
                 QMessageBox::information(this, tr("Botao Remover."), tr("..NÃO REMOVIDO."));
             } else {
-                this->pilha->remove(remover);
-                this->Item->setPilha(this->pilha);
+                this->arvore->Pop(remover->getIdade());
+                this->Item->setArvore(this->arvore);
                 ui->abas_Tab_Widget->setTabEnabled(1, false);
             }
         }
@@ -107,19 +122,20 @@ void Dialog::on_botaoRemover_clicked(){
         int posicao = (ui->comboRemocao->currentIndex() +1);
 
         //Removendo texto do ultimo elemento BUSCADO
-        Nol * remover = this->pilha->Buscar(this->ultimo_BUSCADO);
+        Nol * remover = this->arvore->Busca_no(this->ultimo_BUSCADO);
 
         if(remover == NULL){
             QMessageBox::information(this, tr("Botao Remover."), tr("..NÃO REMOVIDO."));
         } else {
             remover->setNome(posicao, "");
             remover->ordena();
-            this->Item->setPilha(this->pilha);
+            this->Item->setArvore(this->arvore);
         }
     }
 
 adicionaEm_combo(this->ultimo_BUSCADO);
 }
+
 
 void Dialog::on_botaoBuscar_clicked()
 {
@@ -141,7 +157,7 @@ void Dialog::on_botaoBuscar_clicked()
         this->ultimo_BUSCADO = iBusca;
         this->Item->busca = iBusca;
         //se retornou algo válido
-        if(this->pilha->Buscar(iBusca) != NULL){
+        if(!this->arvore->Busca_no(iBusca)->isSentinel()){
             ui->abas_Tab_Widget->setTabEnabled(1, true);
             adicionaEm_combo(iBusca);
         } else {
@@ -150,11 +166,12 @@ void Dialog::on_botaoBuscar_clicked()
     }
 }
 
+//Adiciona os nomes da busca na tabela de remocao
 void Dialog::adicionaEm_combo(int idade)
 {
     ui->comboRemocao->clear();
 
-    Nol * ponteiro = this->pilha->Buscar(idade);
+    Nol * ponteiro = this->arvore->Busca_no(idade);
     if(ponteiro != NULL){
         if(ponteiro->getNome(1).empty()){
             return;
@@ -190,19 +207,23 @@ void Dialog::on_botaoGerar_clicked()
         } else {
             string manipulacoes = converter_QstringToString(manip);
 
-            Pilha * p = importar_pilha(manipulacoes);
-            if(p == NULL){
-                QMessageBox::information(this, tr("Importa."), tr("Texto da pilha fora dos padrões."));
+            Arvore * arv = Gerar_Arvore(manipulacoes);
+            if(arv->getRaiz()->isSentinel()){
+                QMessageBox::information(this, tr("Importa."), tr("Texto da Arvore fora dos padrões."));
             } else {
-                Pilha * temp = this->pilha;
-                this->pilha = p;
-                this->Item->setPilha(this->pilha);
-                this->Item->busca = this->pilha->getTrailer()->getIdade();
+                Arvore * temp = this->arvore;
+                //this->arvore->clean
+                this->arvore = arv;
+                this->Item->setArvore(this->arvore);
                 delete temp;
 
-                if(!this->pilha->empty()){
-                    qDebug () << converter_StringToQstring(p->Print());
+                if(!this->arvore->getRaiz()->isSentinel()){
+                    this->arvore->VLR();
+                    qDebug () << converter_StringToQstring(arv->getVarredura()->Print());
                 }
+                ui->label_altura->setText(converter_Int_ToQstring(this->arvore->getAltura()));
+                ui->label_qtd_nos->setText(converter_Int_ToQstring(this->arvore->getQtd_Nos()));
+                ui->label_qtd_folhas->setText(converter_Int_ToQstring(this->arvore->getNum_Folhas()));
             }
         }
     } else if(ui->comboImporta->currentIndex() == 1){ //Se for a partir de arquivo texto
@@ -213,16 +234,30 @@ void Dialog::on_botaoGerar_clicked()
         if(p == NULL){
             QMessageBox::information(this, tr("Importa."), tr("Texto da pilha no arquivo texto fora dos padrões."));
         } else {
-            Pilha * temp = this->pilha;
-            this->pilha = p;
-            this->Item->setPilha(this->pilha);
-            this->Item->busca = this->pilha->getTrailer()->getIdade();
-            delete temp;
+            string manipulacoes = importar_by_Text();
 
-            if(!this->pilha->empty()){
-                qDebug () << converter_StringToQstring(p->Print());
+            Arvore * arv;
+
+            qDebug()<< "Arquivo: "<< converter_StringToQstring(manipulacoes);
+            qDebug()<< "botaoGerar - 1";
+            arv = Gerar_Arvore(manipulacoes);
+            qDebug()<< "botaoGerar - 2";
+            arv->VLR();
+            //qDebug()<< converter_StringToQstring(arv->getVarredura()->Print());
+            if(arv->getRaiz()->isSentinel()){
+                QMessageBox::information(this, tr("Importa."), tr("Texto da Arvore fora dos padrões."));
+            } else {
+                Arvore * temp = this->arvore;
+                //this->arvore->clean
+                this->arvore = arv;
+                this->Item->setArvore(this->arvore);
+                delete temp;
+
+                if(!this->arvore->getRaiz()->isSentinel()){
+                    this->arvore->VLR();
+                    qDebug () << converter_StringToQstring(arv->getVarredura()->Print());
+                }
             }
-            this->ui->editaManipulacoes->setText(converter_StringToQstring(p->Print()));
         }
     }
 
@@ -230,14 +265,43 @@ void Dialog::on_botaoGerar_clicked()
 
 void Dialog::on_botaoExporta_clicked()
 {
-    if(ui->comboExportar->currentIndex() == 0){ //Se for a partir de texto
-        string pilha = this->pilha->Print();
-        if(this->pilha->empty()){
-            pilha = "vazio.";
-        }
+    string varredura;
+    if(ui->comboExportar->currentIndex() == 0){ //Se for a Pre
+        this->arvore->VLR();
+        varredura = this->arvore->getVarredura()->Print();
 
-        string s = pilha;
-        Exportar_Novo(s);
+    } else if(ui->comboExportar->currentIndex() == 1){ //Se for a In
+        this->arvore->LVR();
+        varredura = this->arvore->getVarredura()->Print();
+
+    } else if(ui->comboExportar->currentIndex() == 2){ //Se for a pos
+        this->arvore->LRV();
+        varredura = this->arvore->getVarredura()->Print();
+
     }
+
+
+    if(this->arvore->getRaiz()->isSentinel()){
+        varredura = "vazio.";
+    }
+
+    string s = varredura;
+    ui->editaManipulacoes->setText(converter_StringToQstring(varredura));
+    Exportar_Novo(s);
+
 }
 
+
+//Apagar Arvore
+void Dialog::on_botaoApagarArvore_clicked()
+{
+    if(1==1){
+
+        this->arvore->clear();
+        this->Item->setArvore(this->arvore);
+
+        ui->label_altura->setText(converter_Int_ToQstring(this->arvore->getAltura()));
+        ui->label_qtd_nos->setText(converter_Int_ToQstring(this->arvore->getQtd_Nos()));
+        ui->label_qtd_folhas->setText(converter_Int_ToQstring(this->arvore->getNum_Folhas()));
+    }
+}

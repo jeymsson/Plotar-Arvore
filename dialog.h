@@ -42,6 +42,8 @@ private slots:
 
     void on_botaoExporta_clicked();
 
+    void on_botaoApagarArvore_clicked();
+
 private:
     Pilha * pilha;
     Arvore * arvore;
