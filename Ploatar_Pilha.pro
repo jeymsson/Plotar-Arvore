@@ -18,13 +18,15 @@ SOURCES += main.cpp\
     nol.cpp \
     pilha.cpp \
     funcoes.cpp \
-    manipulacoes.cpp
+    manipulacoes.cpp \
+    arvore.cpp
 
 HEADERS  += dialog.h \
     meu_item.h \
     nol.h \
     pilha.h \
     funcoes.h \
-    manipulacoes.h
+    manipulacoes.h \
+    arvore.h
 
 FORMS    += dialog.ui
