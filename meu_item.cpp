@@ -213,19 +213,6 @@ void Meu_Item::No_Arv_Print(QPainter *Desenho, Arvore* arvore)
         if (!this->Ligado) {
         }
         else {
-            ////Largura da arvore
-            //estou logo mandando o tamanho pronto
-            //lar_no * larg_arv
-            //int formula = (this->x2 - this->x1) *arvore->getLargura() -((arvore->getLargura() -1) *arvore->getQtd_Nos());
-            /*qDebug()<< "Largura No = " << converter_Int_ToQstring((this->x2 - this->x1));
-            qDebug()<< "Largura Arvore = " << converter_Int_ToQstring(arvore->getLargura());
-            qDebug()<< "Formula = " << converter_Int_ToQstring(formula);
-            arvore->VLR();
-            qDebug()<< "Quantidade = " << converter_Int_ToQstring(arvore->getVarredura()->getNum_nos());*/
-
-
-            //VLR(arvore->getRaiz(), Desenho, this->x1, this->x2, 0);
-
             VLR(arvore->getRaiz(), Desenho, this->x1, this->x2, 0, SomaDistancias());
         }
     }
@@ -258,7 +245,6 @@ void Meu_Item::VLR(Nol * No, QPainter *Desenho, int X1, int X2, int Y1, int larg
     int X_old = Novo_x1;
     if (!No->getLeft()->isSentinel()) {
         //Novo_x1 = Novo_x1 - largura_no - distancia_X - distancia_X/2;
-        Novo_x1 = Novo_x1 + prim_x(getArvore()->retornarAltura(No)) ;
         Novo_x1 = Novo_x1 - (largura_no/2 + distancia_X/2) ;
         Novo_x1 = Novo_x1 - (largura_no/2 + distancia_X/2)  - distancia_X*(this->arvore->getMaxLargura(No));
 
@@ -281,13 +267,11 @@ void Meu_Item::VLR(Nol * No, QPainter *Desenho, int X1, int X2, int Y1, int larg
     }
     if (!No->getRight()->isSentinel()) {
         //Novo_x1 = 50 + Novo_x1 + retorna_prox_X(getArvore()->getRaiz(), largura_no, distancia_X);
-        Novo_x1 = Novo_x1 + prim_x(getArvore()->retornarAltura(No)) ;
         Novo_x1 = Novo_x1 + (largura_no/2 + distancia_X/2) ;
         Novo_x1 = Novo_x1 + (largura_no/2 + distancia_X/2) + distancia_X*(this->arvore->getMaxLargura(No));
         X_Final2 = X_Final2 ;
 
         if(Novo_x1 == X_old){
-            Novo_x1 = Novo_x1 + prim_x(getArvore()->retornarAltura(No)) ;
             Novo_x1 = Novo_x1 + (largura_no/2 + distancia_X/2) ;
             Novo_x1 = Novo_x1 + (largura_no/2 + distancia_X/2) + distancia_X*(this->arvore->getMaxLargura(No));
             X_Final2 = X_Final2 ;
@@ -308,72 +292,6 @@ void Meu_Item::VLR(Nol * No, QPainter *Desenho, int X1, int X2, int Y1, int larg
     update();
 }
 
-void Meu_Item::LVR(Nol *No, QPainter *Desenho, int X1, int X2, int Y1, int X_pai)
-{
-    //p->Push_back_No(No);
-    ////Declarando variaveis.
-    int Novo_x1 = X1;
-    int X_Final2 = X2;
-    int     largura_no = (this->x2 - this->x1);
-
-    ////Distancia de altura
-    int distancia_X = 40;
-    int distancia_Y = 60;
-
-    ////Setando dentro do no.
-    No->setCoord_x(X1);
-    No->setCoord_y(Y1);
-
-    ////Desenhando
-    Desenha_No(Desenho, No, Novo_x1, X_Final2, Y1, 60 );
-
-    //Larg_Filhos = Larg_Filhos;
-
-
-    Y1 += distancia_Y;
-
-    int X_old = Novo_x1;
-    if (!No->getLeft()->isSentinel()) {
-        //Novo_x1 = Novo_x1 - largura_no - distancia_X - distancia_X/2;
-        Novo_x1 = 100 + Novo_x1 - retorna_prox_X(getArvore()->getRaiz(), largura_no, distancia_X);
-        X_Final2 = X_Final2 ;
-
-        LVR(No->getLeft(), Desenho, Novo_x1, X_Final2, Y1, No->getCoord_x());
-
-        Desenho->drawLine(X1, Y1, Novo_x1 + X_Final2, Y1 + distancia_Y/2);
-
-        //Organiza poligono
-        int tam = 8;
-        QPolygon seta;
-        seta << QPoint(Novo_x1 + X_Final2 +tam, Y1 + distancia_Y/2 - tam);
-        seta << QPoint(Novo_x1 + X_Final2 +tam, Y1 + distancia_Y/2 + tam/2);
-        seta << QPoint(Novo_x1 + X_Final2     , Y1 + distancia_Y/2        );
-        Desenho->drawPolygon(seta);
-
-
-        update();
-    }
-    if (!No->getRight()->isSentinel()) {
-        Novo_x1 = 50 + Novo_x1 + retorna_prox_X(getArvore()->getRaiz(), largura_no, distancia_X);
-        X_Final2 = X_Final2 ;
-
-        LVR(No->getRight(), Desenho, Novo_x1, X_Final2, Y1, No->getCoord_x());
-        Desenho->drawLine(X1 + X_Final2, Y1, Novo_x1, Y1 + distancia_Y/2);
-
-        //Organiza poligono
-        int tam = 8;
-        QPolygon seta;
-        seta << QPoint(Novo_x1 -tam, Y1 + distancia_Y/2 - tam  );
-        seta << QPoint(Novo_x1 -tam, Y1 + distancia_Y/2 + tam/2);
-        seta << QPoint(Novo_x1     , Y1 + distancia_Y/2        );
-        Desenho->drawPolygon(seta);
-
-        update();
-    }
-    update();
-}
-
-
 int Meu_Item::retorna_prox_X(Nol* No, int largura_no, int distancia_X){
     if(No->isSentinel()){
         return 0;
@@ -381,41 +299,6 @@ int Meu_Item::retorna_prox_X(Nol* No, int largura_no, int distancia_X){
         int cont = pow(2, getArvore()->retornarAltura(No)-1);
         return cont * (largura_no/2 - distancia_X/2);
     }
-}
-
-
-
-
-int Meu_Item::soma_x(int h){
-//    ////Distancia de altura
-//    int distancia_X = 40;
-//    int largura_no = (this->x2 - this->x1);
-
-//    if(h == 0){
-        return 0;
-//    } else {
-//        pow(2, (h-1)) * (largura_no/2 + distancia_X/2);
-//    }
-}
-
-int Meu_Item::prim_x(int h){
-//    int resp;
-//    if(h == 0){
-//        resp = 0;
-//    } else {
-//        int cont = -1;
-//        int temp;
-//        int ant = 0;
-//        while (cont != h) {
-//            cont++;
-//            temp = soma_x(cont);
-//            resp = temp + ant;
-//            ant = resp;
-//        }
-//        return resp;
-//    }
-//    return resp;
-    return 0;
 }
 
 int Meu_Item::SomaDistancias()

@@ -58,12 +58,7 @@ void No_Arv_Print(QPainter *Desenho, Arvore* arvore);
 void desenha_flecha_Esq(QPainter *Desenho, const int coord_X, const int coord_Y, int seta, int cabo);
 
 void VLR(Nol * No, QPainter *Desenho, int X1, int X2, int Y1, int X_pai);
-void LVR(Nol * No, QPainter *Desenho, int X1, int X2, int Y1, int X_pai);
 
-//void VLR2(Nol * No, QPainter *Desenho, int X1, int X2, int Y1, int X_pai, int x_questao, int x_ant, int altura);
-
-int soma_x(int h);
-int prim_x(int h);
 int SomaDistancias();
 
 };
