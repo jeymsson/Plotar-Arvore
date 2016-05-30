@@ -66,7 +66,7 @@ Pilha * importar_pilha(string &texto)
             return NULL;
         }
 
-        cout << "\nArvore: ." << arvorinha.front() << endl;
+        cout << "\nArvore: " << arvorinha.front() << endl;
 
         nozinhos = split(arvorinha.front(), ';');		//Divide os nos por: ;
 
@@ -118,15 +118,18 @@ Pilha * importar_pilha(string &texto)
                 ini = iniciais[i];
                         /*cout << " ---- Sub-testador 4 " << testador << endl;
                         getchar(); */
+
+                cout << " Idade: " << years << " inicial: " << ini << endl;
                 arv_atual->Push_back_Org(years, ini);
                         /*cout << " ---- Sub-testador 5 " << testador << endl;
                         getchar();*/
             }
-                        /*cout << " ---- Testador 5 " << testador << endl;
+                        /*cout << " ---- Contador " << testador++ << endl;
                         getchar();
                         testador++;*/
             qtd++;
         }
+        cout << " --Saiu-- " << endl;
         return arv_atual;
     }
     else {
@@ -154,3 +157,99 @@ void Exportar_Novo(string & s){
         cout << "Nao foi possivel abrir o arquivo solicitado. " << endl;
     }
 }
+
+//#include <vector>
+Arvore * Gerar_Arvore(string & texto_arvo) {
+    //(12[JBV,IOF];13[UI,AE, IH];5[HJK])
+    stringstream lineStream(texto_arvo);
+    vector<string> arvorinha;
+    vector<string> nozinhos;
+    vector<string> idade;
+    vector<string> iniciais;
+    string		   ini;
+    int			   years;
+
+    Arvore * arv_atual = new Arvore();
+    getline(lineStream, ini, '(');				// Recebe o que tiver antes do (
+    int Teste = conv_StringToInt(ini);		// Verifica se
+                /*cout << " ---- Teste 1 ---- " << endl;
+                getchar();*/
+    if (Teste == 0){								// existe (.
+
+        arv_atual;
+
+
+        // --Como é verdade monta arvore:
+        arvorinha = split(texto_arvo, ')');				//Retira da linha: )
+        arvorinha = split(arvorinha[0], '(');		//Retira da linha: (
+        arvorinha[0] = arvorinha[1];				//Organizando posicao
+        arvorinha.pop_back();						//Remove o ultimo.
+
+        //cout << "\nArvore: ." +arvorinha[0] << endl;
+        nozinhos = split(arvorinha[0], ';');		//Divide os nos por: ;
+
+        int i = 0;
+        int qtd = 0;
+
+        int testador = 1;
+
+        while (qtd < nozinhos.size()){
+
+            // -----------------------
+            //Apagando dados temporarios
+
+            i = 0;
+            while (i < iniciais.size()){
+                if (i == 0){
+                    idade.pop_back();
+                }
+                years = NULL;
+                ini = iniciais[i];
+                ini = "";
+                iniciais.pop_back();
+                i++;
+            }
+
+            //Capturando IDADE e estrutura de Iniciais;
+            idade = split(nozinhos[qtd], '[');	//Pega a unica idade antes do: [
+            ini = idade[1];
+            idade.pop_back();	//Retira o exesso que é o segundo
+
+            iniciais = split(ini, ']');	//Pega a estrutura de iniciais antes do: ]
+            ini = iniciais[0];
+            iniciais.pop_back();
+
+            //Capturando INICIAIS;
+            iniciais = split(ini, ',');	//Pegando iniciais separadas por: ,
+
+            //Adicionando a arvore.
+            for (int i = 0; i < iniciais.size(); i++){
+                        /*cout << " Size: " << iniciais.size() << endl;
+                        cout << " ---- Sub-testador 1 " << testador << endl;
+                        getchar(); */
+                ini = idade[0];
+                        /*cout << " ---- Sub-testador 2 " << testador << endl;
+                        getchar(); */
+                years = conv_StringToInt(ini);
+                        /*cout << " ---- Sub-testador 3 " << testador << endl;
+                        getchar(); */
+                ini = iniciais[i];
+                        /*cout << " ---- Sub-testador 4 " << testador << endl;
+                        getchar(); */
+                arv_atual->Add_org(years, ini);
+                        /*cout << " ---- Sub-testador 5 " << testador << endl;
+                        getchar();*/
+            }
+                        /*cout << " ---- Testador 5 " << testador << endl;
+                        getchar();
+                        testador++;*/
+            qtd++;
+        }
+
+    }
+    else {
+        cout << "\nEstrutura fora do padrao, sem: ( ou possui espaços." << endl;
+    }
+    return arv_atual;
+}
+
