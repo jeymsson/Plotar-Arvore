@@ -33,6 +33,7 @@ public:
         Arvore * getArvore();
         void setArvore(Arvore * arvore);
         void setArvore(Arvore * arvore, QString QIdadeBusca);
+        int retorna_prox_X(Nol* No, int largura_no, int distancia_X);
 
 private:
     Pilha * pilha;
@@ -53,7 +54,17 @@ protected:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 void Desenha_No(QPainter *Desenho, Nol* noh, int X1, int X2, int Y1, int Y2);
 void No_Pilha_Print(QPainter *Desenho, Pilha *pilha);
+void No_Arv_Print(QPainter *Desenho, Arvore* arvore);
 void desenha_flecha_Esq(QPainter *Desenho, const int coord_X, const int coord_Y, int seta, int cabo);
+
+void VLR(Nol * No, QPainter *Desenho, int X1, int X2, int Y1, int X_pai);
+void LVR(Nol * No, QPainter *Desenho, int X1, int X2, int Y1, int X_pai);
+
+//void VLR2(Nol * No, QPainter *Desenho, int X1, int X2, int Y1, int X_pai, int x_questao, int x_ant, int altura);
+
+int soma_x(int h);
+int prim_x(int h);
+int SomaDistancias();
 
 };
 
