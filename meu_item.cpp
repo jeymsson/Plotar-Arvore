@@ -266,7 +266,6 @@ void Meu_Item::VLR(Nol * No, QPainter *Desenho, int X1, int X2, int Y1, int larg
         update();
     }
     if (!No->getRight()->isSentinel()) {
-        //Novo_x1 = 50 + Novo_x1 + retorna_prox_X(getArvore()->getRaiz(), largura_no, distancia_X);
         Novo_x1 = Novo_x1 + (largura_no/2 + distancia_X/2) ;
         Novo_x1 = Novo_x1 + (largura_no/2 + distancia_X/2) + distancia_X*(this->arvore->getMaxLargura(No));
         X_Final2 = X_Final2 ;
@@ -292,14 +291,6 @@ void Meu_Item::VLR(Nol * No, QPainter *Desenho, int X1, int X2, int Y1, int larg
     update();
 }
 
-int Meu_Item::retorna_prox_X(Nol* No, int largura_no, int distancia_X){
-    if(No->isSentinel()){
-        return 0;
-    } else {
-        int cont = pow(2, getArvore()->retornarAltura(No)-1);
-        return cont * (largura_no/2 - distancia_X/2);
-    }
-}
 
 int Meu_Item::SomaDistancias()
 {

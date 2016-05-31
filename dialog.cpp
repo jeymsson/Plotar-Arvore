@@ -100,9 +100,9 @@ void Dialog::on_botaoRemover_clicked(){
 
         QMessageBox::StandardButton resposta;
         resposta = QMessageBox::question(this, tr("Botao Remover.")
-                                         , tr("Deseja mesmo excluir este Nó da ULTIMA BUSCA? "));
+                                         , tr("Deseja mesmo excluir este No da ULTIMA BUSCA? "));
         if(resposta == QMessageBox::No){
-            QMessageBox::information(this, tr("Botao Remover."), tr("Nó não removido."));
+            QMessageBox::information(this, tr("Botao Remover."), tr("No nao removido."));
         } else if(resposta == QMessageBox::Yes){
 
             //Removendo do ultimo elemento BUSCADO
@@ -207,6 +207,8 @@ void Dialog::on_botaoGerar_clicked()
         } else {
             string manipulacoes = converter_QstringToString(manip);
 
+            this->arvore->clear();
+
             Arvore * arv = Gerar_Arvore(manipulacoes);
             if(arv->getRaiz()->isSentinel()){
                 QMessageBox::information(this, tr("Importa."), tr("Texto da Arvore fora dos padrões."));
@@ -248,7 +250,9 @@ void Dialog::on_botaoGerar_clicked()
                 QMessageBox::information(this, tr("Importa."), tr("Texto da Arvore fora dos padrões."));
             } else {
                 Arvore * temp = this->arvore;
-                //this->arvore->clean
+
+                this->arvore->clear();
+
                 this->arvore = arv;
                 this->Item->setArvore(this->arvore);
                 delete temp;

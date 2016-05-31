@@ -33,7 +33,6 @@ public:
         Arvore * getArvore();
         void setArvore(Arvore * arvore);
         void setArvore(Arvore * arvore, QString QIdadeBusca);
-        int retorna_prox_X(Nol* No, int largura_no, int distancia_X);
 
 private:
     Pilha * pilha;
