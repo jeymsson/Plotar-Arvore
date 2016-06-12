@@ -60,6 +60,13 @@ void VLR(Nol * No, QPainter *Desenho, int X1, int X2, int Y1, int X_pai);
 
 int SomaDistancias();
 
+QRectF boundingRect() const
+{
+    qreal penWidth = 1;
+    return QRectF(-10 - penWidth / 2, -10 - penWidth / 2,
+                  20 + penWidth, 20 + penWidth);
+}
+
 };
 
 #endif // MEU_ITEM_H

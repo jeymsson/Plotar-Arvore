@@ -213,7 +213,7 @@ void Meu_Item::No_Arv_Print(QPainter *Desenho, Arvore* arvore)
         if (!this->Ligado) {
         }
         else {
-            VLR(arvore->getRaiz(), Desenho, this->x1, this->x2, 0, SomaDistancias());
+            VLR(arvore->getRaiz(), Desenho, this->x1, this->x2, -200, SomaDistancias());
         }
     }
 }
