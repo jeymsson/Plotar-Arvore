@@ -62,9 +62,9 @@ void Dialog::on_botaoInserir_clicked()
     std::string sNome = converter_QstringToString(QNome);
 
     if(QIdade.isEmpty()){
-        QMessageBox::information(this, tr("Atenção."), tr("Nao tem idade digitada."));
+        QMessageBox::information(this, tr("Atencao."), tr("Nao tem idade digitada."));
     } else if(QNome.isEmpty()){
-        QMessageBox::information(this, tr("Atenção."), tr("Nao tem nome digitado."));
+        QMessageBox::information(this, tr("Atencao."), tr("Nao tem nome digitado."));
     } else {
         this->arvore->Add_org(iIdade, std::string(sNome) );
 
@@ -131,8 +131,11 @@ void Dialog::on_botaoRemover_clicked(){
             this->Item->setArvore(this->arvore);
         }
     }
+    adicionaEm_combo(this->ultimo_BUSCADO);
+    ui->label_altura->setText(converter_Int_ToQstring(this->arvore->getAltura()));
+    ui->label_qtd_nos->setText(converter_Int_ToQstring(this->arvore->getQtd_Nos()));
+    ui->label_qtd_folhas->setText(converter_Int_ToQstring(this->arvore->getNum_Folhas()));
 
-adicionaEm_combo(this->ultimo_BUSCADO);
 }
 
 
@@ -203,7 +206,7 @@ void Dialog::on_botaoGerar_clicked()
 
     if(ui->comboImporta->currentIndex() == 0){ //Se for a partir de texto
         if(manip.isEmpty()){
-            QMessageBox::information(this, tr("Importa."), tr("Nao tem Pilha digitada."));;
+            QMessageBox::information(this, tr("Importa."), tr("Nao tem Arvore digitada."));;
         } else {
             string manipulacoes = converter_QstringToString(manip);
 
@@ -234,7 +237,7 @@ void Dialog::on_botaoGerar_clicked()
 
         Pilha * p = importar_pilha(manipulacoes);
         if(p == NULL){
-            QMessageBox::information(this, tr("Importa."), tr("Texto da pilha no arquivo texto fora dos padrões."));
+            QMessageBox::information(this, tr("Importa."), tr("Texto da arvore no arquivo texto fora dos padrões."));
         } else {
             string manipulacoes = importar_by_Text();
 
@@ -355,3 +358,4 @@ void Dialog::on_botaoMostrarTrav_clicked()
     }
 
 }
+
